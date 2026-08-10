@@ -1,0 +1,16 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.idea/
+node_modules/
+*.mp4
+storage/uploads/*
+storage/events/*
+storage/recordings/*
+!storage/uploads/.gitkeep
+!storage/events/.gitkeep
+!storage/recordings/.gitkeep
