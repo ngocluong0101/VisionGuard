@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -11,6 +12,10 @@ class Settings(BaseSettings):
     debug: bool = True
     log_level: str = "INFO"
     database_url: str = "sqlite:///./visionguard.db"
+    storage_dir: Path = Path("storage")
+    max_upload_mb: int = 100
+    video_reconnect_attempts: int = 3
+    video_reconnect_backoff_seconds: float = 1.0
 
 
 @lru_cache(maxsize=1)

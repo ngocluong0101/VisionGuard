@@ -1,0 +1,1 @@
+"""Video ingestion layer for VisionGuard."""

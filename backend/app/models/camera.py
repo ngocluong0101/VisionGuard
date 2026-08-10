@@ -22,7 +22,7 @@ class Camera(TimestampMixin, Base):
     location_id: Mapped[int | None] = mapped_column(ForeignKey("locations.id", ondelete="SET NULL"), nullable=True)
     source_type: Mapped[SourceType] = mapped_column(nullable=False)
     source_uri: Mapped[str] = mapped_column(Text, nullable=False)
-    status: Mapped[CameraStatus] = mapped_column(nullable=False, default=CameraStatus.UNKNOWN)
+    status: Mapped[str] = mapped_column(Text, nullable=False, default=CameraStatus.UNKNOWN.value)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     location: Mapped["Location | None"] = relationship(back_populates="cameras")

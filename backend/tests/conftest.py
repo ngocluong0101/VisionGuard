@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from backend.app.api.deps import get_db
 from backend.app.db.session import create_db_engine
 from backend.app.main import app
+from backend.app.video.manager import VideoSourceManager
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
@@ -27,23 +28,44 @@ def migrated_database_url(database_url: str) -> str:
 
 
 @pytest.fixture()
-def db_session(migrated_database_url: str):
+def session_factory(migrated_database_url: str):
     engine = create_db_engine(migrated_database_url)
-    session_factory = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+    factory = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
+    yield factory
+    engine.dispose()
+
+
+@pytest.fixture()
+def db_session(session_factory):
     session = session_factory()
     try:
         yield session
     finally:
         session.close()
-        engine.dispose()
 
 
 @pytest.fixture()
-def client(db_session):
+def video_source_manager(session_factory):
+    return VideoSourceManager(
+        session_factory=session_factory,
+        reconnect_attempts=1,
+        reconnect_backoff_seconds=0.05,
+        storage_dir=ROOT_DIR / "storage",
+    )
+
+
+@pytest.fixture()
+def client(db_session, video_source_manager):
     def override_get_db():
         yield db_session
 
+    def override_get_video_source_manager():
+        return video_source_manager
+
     app.dependency_overrides[get_db] = override_get_db
+    from backend.app.api.deps import get_video_source_manager
+
+    app.dependency_overrides[get_video_source_manager] = override_get_video_source_manager
     try:
         yield TestClient(app)
     finally:

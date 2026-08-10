@@ -8,8 +8,11 @@ class SourceType(str, Enum):
 
 
 class CameraStatus(str, Enum):
+    CONNECTING = "CONNECTING"
     ONLINE = "ONLINE"
+    RECONNECTING = "RECONNECTING"
     OFFLINE = "OFFLINE"
+    ERROR = "ERROR"
     UNKNOWN = "UNKNOWN"
 
 
