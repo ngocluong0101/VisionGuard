@@ -5,3 +5,6 @@ pydantic-settings
 python-dotenv
 pytest
 httpx
+sqlalchemy
+alembic
+psycopg[binary]

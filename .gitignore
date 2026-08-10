@@ -6,8 +6,11 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .idea/
+.vscode/
 node_modules/
 *.mp4
+*.db
+*.sqlite3
 storage/uploads/*
 storage/events/*
 storage/recordings/*

@@ -1,0 +1,1 @@
+"""CRUD services for VisionGuard."""
